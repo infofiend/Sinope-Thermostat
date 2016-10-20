@@ -1,11 +1,29 @@
+/**
+ *  Sinope Thermostat with Mode
+ *
+ *  version 1.1 -- changed authorization requirements
+ *
+ *  Copyright 2016 Anthony Pastor
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License. You may obtain a copy of the License at:
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+ *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
+ *  for the specific language governing permissions and limitations under the License.
+ *
+ */
+
+
+
 preferences {
     input("email", "text", title: "Username", description: "Your neviweb username (usually an email address)")
     input("password", "password", title: "Password", description: "Your neviweb password")
 	input("gatewayname", "text", title: "Network Name:", description: "Name of your neviweb® network")
 	input("devicename", "text", title: "Device Name:", description: "Name of your neviweb® thermostat")
     
-//    input("devicid", "text", title: "Device Id:", description: "Device number for the thermostat (from 1 to 255)")
-//    input("temperatureUnit", "enum", title: "Temperature Unit:", options: ["fahrenheit", "celsius"])
 //    input("temperatureAdj", "enum", title: "Temperature adjustment:", description: "Device number for the thermostat (from -10 to +10)", 
 //    	options: ["-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"])
 }
