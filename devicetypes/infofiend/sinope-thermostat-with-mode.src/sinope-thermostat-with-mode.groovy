@@ -197,9 +197,10 @@ metadata {
             state "refresh", action:"polling.poll", icon:"st.secondary.refresh", defaultState: true
         }
         
-        valueTile("temperatureUnit", "device.temperatureUnit", width: 2, height: 2, canChangeIcon: false) {
-            state "fahrenheit",  label: "°F"
-            state "celsius", label: "°C"
+        standardTile("temperatureUnit", "device.temperatureUnit", width: 2, height: 2, canChangeIcon: false) {
+            state "fahrenheit", label: "°F", action: "updateTempUnit", backgroundColor: "#ADD8E7", nextState:"Updating" 
+            state "celsius", label: "°C", action: "updateTempUnit", backgroundColor: "#90d2a7", nextState:"Updating"
+            state "Updating", label:"Updating", action:'updateTempUnit', backgroundColor: "#ffffff"        
         }
         
         controlTile("heatSliderControl", "device.heatingSetpoint", "slider", width: 3, height: 2, inactiveLabel: false) {
@@ -238,7 +239,10 @@ def initialize() {
 	if (!state.gatewayId || !state.deviceId || !state.dataAuth) {
     	login()
 	}         
-	
+	if (!device.currentValue("temperatureUnit") ) {
+    	setFahrenheit() 
+	}
+    
     poll()
 
     schedule("0 0 7 1/1 * ? *", poll) 
@@ -422,19 +426,13 @@ def getTempUnit() {
 
 }
 
-def setFahrenheit() {
-    def temperatureUnit = "fahrenheit"
-    log.debug "Setting temperatureUnit to: ${temperatureUnit}"
-    sendEvent(name: "temperatureUnit", value: temperatureUnit, isStateChange: true, display: false)
-    
+def updateTempUnit() {
+	log.trace "updateTempUnit():"
+
+	logout()
+    schedule ( now() +  2500, login )
 }
 
-def setCelsius() {
-    def temperatureUnit = "celsius"
-    log.debug "Setting temperatureUnit to: ${temperatureUnit}"
-    sendEvent(name: "temperatureUnit", value: temperatureUnit, isStateChange: true, display: false)
-    
-}
 
 
 //		AUTO & OFF FUNCTIONS
