@@ -2,6 +2,7 @@
  *  Sinope Thermostat with Mode
  *
  *  version 1.1 -- changed authorization requirements
+ *  version 1.1b -- fixed temperature format
  *
  *  Copyright 2016 Anthony Pastor
  *
@@ -47,6 +48,7 @@ metadata {
         command "heatingSetpointDown"
         command "setHeatingSetpoint"	//, ["number"]
         command "getTempUnit"
+        command "updateTempUnit"
         command "setFahrenheit"
         command "setCelsius"
         command "auto"
@@ -117,7 +119,7 @@ metadata {
 		}	   
     
         valueTile("temperature", "device.temperature", width: 2, height: 2) {
-			state("temperature", label:'${currentValue}°', unit:"dF",
+			state("temperature", label:'${currentValue}°', // unit: "dF",
 				backgroundColors: [
                 // Celsius Color Range
                 [value: 0, color: "#153591"],
