@@ -430,7 +430,8 @@ def getTempUnit() {
 
 def updateTempUnit() {
 	log.trace "updateTempUnit():"
-
+	state.gatewayId = null
+    state.deviceId = null
 	logout()
     schedule ( now() +  2500, login )
 }
@@ -525,6 +526,9 @@ def poll() {
 		}
         
 		log.debug "data == ${data}"
+        def tempUnit = data.auth.user.format.temperature
+           
+        log.debug "data.auth.user.format.temperature == ${tempUnit}"
 	 	log.debug "data.gateway_list== ${data.gateway_list}"
 		log.debug "data.gateway_list == ${data.gateway_list.id}"        
 		log.debug "data.devices_list == ${data.devices_list}"
@@ -532,7 +536,13 @@ def poll() {
         
     	log.debug "data.status == ${data.status}"
         log.debug "*****************data.status.mode == ${data.status.mode}"
-    
+    	if (tempUnit == "c") {
+        	tempUnit = "celsius"
+        } else {
+	        tempUnit = "fahrenheit"
+        } 
+    	sendEvent(name: 'temperatureUnit', value: tempUnit, display: true, isStateChange: true)
+        
 	    switch (data.status.mode) {		
     		case 0: 			
 				myPresence = "Home"
@@ -566,6 +576,8 @@ def poll() {
 	    def spLabel
     	def myColor
 	    def correctSPT = [:]     
+        log.trace "Doing POLL:  data.status.setpoint = ${data.status.setpoint} & data.status.temperature = ${data.status.temperature}"
+        
     	if (data.status.mode != 0) {
 		    correctSPT = selTempSetpoint(data.status.setpoint, data.status.temperature)
     	    mySetpoint = correctSPT.sp 
@@ -621,10 +633,11 @@ def fToC(temp) {
 
 def selTempSetpoint(setpoint, temp) {	
 	log.trace "selTempSetpoint( ${setpoint}, ${temp} ): "
-	log.debug "temperatureUnit = ${temperatureUnit}"
+	def tempUnit = device.latestValue("temperatureUnit")
+    log.debug "temperatureUnit = ${tempUnit}"
 	def mySP = setpoint as Double
     def myT = temp as Double    
-	switch (temperatureUnit) {
+	switch (tempUnit) {
         case "celsius":
 			if (setpoint) {		
             	mySP = mySP
@@ -638,7 +651,7 @@ def selTempSetpoint(setpoint, temp) {
     	    myT = Math.round(cToF(myT))
         	break;	    
 	}     
-    log.debug "In ${temperatureUnit}, setpoint is ${mySP} and temperature is ${myT}."
+    log.debug "In ${tempUnit}, setpoint is ${mySP} and temperature is ${myT}."
      
     return [sp: mySP, t: myT]
 
@@ -646,11 +659,11 @@ def selTempSetpoint(setpoint, temp) {
 
 def FormatTemp(temp){
 
-	def temperatureUnit = device.latestValue('temperatureUnit')
+	def tempUnit = device.latestValue('temperatureUnit')
 	
     if (temp!=null){
 		float i=Float.valueOf(temp)
-		switch (temperatureUnit) {
+		switch (tempUnit) {
 	        case "celsius":
 				return (Math.round(i*2)/2).toDouble().round(2)
 				log.warn((Math.round(i*2)/2).toDouble().round(2))
