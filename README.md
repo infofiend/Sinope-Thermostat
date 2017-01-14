@@ -25,9 +25,7 @@ It also has the following **Info Tiles**:
 5) _Idle / Heating_:  Identifies whether the device is currently Heating or Idle;
 6) _Load_: Identifies the percent of the max load that the Thermostat is sending to the Heater.
 
-You can use CoRE to automate any of these attributes  For example, to automate the Home/Away modes in CoRE,  use the presenceHome() or the presenceAway() actions (make sure you first turn on the expert settings in CoRE). Here is a screenshot of the piston I have:
-
-<img src="/uploads/default/original/3X/e/3/e3c6b0ef2a168eebc2f05aff38a6b9f74dbf4361.png" width="281" height="500">
+You can use CoRE to automate any of these attributes  For example, to automate the Home/Away modes in CoRE,  use the presenceHome() or the presenceAway() actions (make sure you first turn on the expert settings in CoRE). 
 
 You can find version 1.3 of the DTH [here](https://github.com/infofiend/Sinope-Thermostat/tree/master) (github repository of infofiend / Sinope-Thermostat / master).  
 
